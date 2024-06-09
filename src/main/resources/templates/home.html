@@ -1,7 +1,50 @@
 <html>
 <head><title>Home Page</title></head>
 <body>
-<h1>Hello !</h1>
+<h1>Hello!</h1>
 <p>Welcome to <span th:text="${appName}">Our App</span></p>
+<p>
+  <table>
+    <tr>
+        <th>ID</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Year</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="car : ${cars}">
+        <td th:text="${car.id}"></td>
+        <td th:text="${car.make}"></td>
+        <td th:text="${car.model}"></td>
+        <td th:text="${car.modelYear}"></td>
+        <td th:text="${car.price}"></td>
+    </tr>
+</table>
+<form method="post">
+    <input type="hidden" name="type" value="car"/>
+    <input type="submit" value="Increase price"/>
+</form>
+</p>
+<p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Country</th>
+        <th>Class</th>
+        <th>Max Speed</th>
+    </tr>
+    <tr th:each="frigate : ${frigates}">
+        <td th:text="${frigate.id}"></td>
+        <td th:text="${frigate.country}"></td>
+        <td th:text="${frigate.vesselClass}"></td>
+        <td th:text="${frigate.maxSpeed}"></td>
+    </tr>
+</table>
+<form method="post">
+    <input type="hidden" name="type" value="frigate"/>
+    <input type="submit" value="Increase speed">
+</form>
+</p>
+
 </body>
 </html>

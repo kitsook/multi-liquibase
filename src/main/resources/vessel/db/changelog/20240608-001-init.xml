@@ -4,19 +4,19 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <!--Added the entity Car-->
-    <changeSet id="20240607-001" author="user">
-        <createTable tableName="car">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+    <!--Added the entity Frigate-->
+    <changeSet id="20240608-001" author="user">
+        <createTable tableName="frigate">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="make" type="varchar(255)">
+            <column name="country" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="brand" type="varchar(255)">
+            <column name="vessel_class" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="price" type="double">
+            <column name="max_speed" type="double">
                 <constraints nullable="true" />
             </column>
         </createTable>
