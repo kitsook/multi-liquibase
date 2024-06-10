@@ -2,6 +2,7 @@ package net.clarenceho.multi_liquibase.modules.vessel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -11,18 +12,21 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EntityScan(basePackages = { "net.clarenceho.multi_liquibase.modules.vessel" })
+@EnableTransactionManagement
 @EnableJpaRepositories(
     basePackages = "net.clarenceho.multi_liquibase.modules.vessel",
     entityManagerFactoryRef = "vesselEntityManager",
     transactionManagerRef = "vesselTransactionManager"
 )
-@ConditionalOnProperty(prefix = "demo.datasources.vessel", name = "url")  // for use with multiple data sources deployment only
+@ConditionalOnProperty(prefix = "demo.datasources.vessel", name = "url")  // only for use when deployed as a module with multiple data sources
 public class PersistenceVesselConfiguration {
     @Autowired
     private Environment env;

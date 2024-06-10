@@ -2,6 +2,7 @@ package net.clarenceho.multi_liquibase.modules.vehicle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -12,18 +13,21 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EntityScan(basePackages = { "net.clarenceho.multi_liquibase.modules.vehicle" })
+@EnableTransactionManagement
 @EnableJpaRepositories(
     basePackages = "net.clarenceho.multi_liquibase.modules.vehicle",
     entityManagerFactoryRef = "vehicleEntityManager",
     transactionManagerRef = "vehicleTransactionManager"
 )
-@ConditionalOnProperty(prefix = "demo.datasources.vehicle", name = "url")  // for use with multiple data sources deployment only
+@ConditionalOnProperty(prefix = "demo.datasources.vehicle", name = "url")  // only for use when deployed as a module with multiple data sources
 public class PersistenceVehicleConfiguration {
     @Autowired
     private Environment env;
