@@ -1,10 +1,10 @@
 ## Multi-liquibase
 
-This is a Spring Boot JPA proof-of-concept(POC) application to test out multiple data sources together with Liquibase.
+This is a Spring Boot JPA proof-of-concept (POC) application to test out multiple data sources together with Liquibase.
 
 ### Goal of this POC
-- new data sources can be added with minimum or no change to the core logic to setup data sources and Liquibase
-- a new "module" can be easily added to the project with separate persistence. The module will need to define its own JPA repository etc. Then add the data source information to `application.properties` of the main application 
+- new data sources can be added with minimum or no change to the core logic to setup data sources and run Liquibase
+- a new "module" can be easily added to the project with separate data source. The module will need to define its own JPA repository etc. Then add the data source information to `application.properties` of the main application 
 - Liquibase can be enable/disable for the whole application or individual module
 
 ### Quick start
@@ -19,7 +19,7 @@ Brief description on how this Spring Boot application is configured.
 
 #### Modules
 - in this application, "module" means a standalone business logic and has separate data source
-- this application has two sample "modules": `vehicle` and `vessel`, and each has their own entities and repositories
+- this application has two sample "modules": `vehicle` and `vessel`, and each has its own entities and repositories
 - each module has its own JPA configuration
 - a module could be implemented in the same project source tree or pulled in from another source tree during compilation. They can even be coming from separate jar files and packaged together into an uber jar for deployment
 - note that a module, in theory, could has one set of data source when the module is deployed as standalone microservice. And another data source when packaged as a "module" in a monolith application. See the `ConditionalOnProperty` in [PersistenceVehicleConfiguration](src/main/java/net/clarenceho/multi_liquibase/modules/vehicle/PersistenceVehicleConfiguration.java) or [PersistenceVesselConfiguration](src/main/java/net/clarenceho/multi_liquibase/modules/vessel/PersistenceVesselConfiguration.java)
@@ -30,7 +30,7 @@ Brief description on how this Spring Boot application is configured.
 - instead, it uses custom properties `demo.datasources.[module_name].*` to define map of data source properties and Liquibase configuration for multiple modules
 
 #### [DataSourceProperties](src/main/java/net/clarenceho/multi_liquibase/datasource/DataSourceProperties.java) and [DataSourceProperty](src/main/java/net/clarenceho/multi_liquibase/datasource/DataSourceProperty.java)
-- these are the classes to read the configuration from `application.properties`
+- these are the classes to read the data source configuration from `application.properties`
 - each "module" can has its own data connection properties and Liquibase properties
 
 #### [MultiDataSourceConfiguration](src/main/java/net/clarenceho/multi_liquibase/MultiDataSourceConfiguration.java)
@@ -41,7 +41,7 @@ Brief description on how this Spring Boot application is configured.
 - it can be disabled with `spring.liquibase.enabled`, which switch on/off the Liquibase execution for the whole application during startup
 
 #### [MultiDataSourceLiquibase](src/main/java/net/clarenceho/multi_liquibase/datasource/MultiDataSourceLiquibase.java)
-- this bean, when initialized, will execute Liquibase (if enabled) for each module in parallel
+- this bean, when initialized, will execute Liquibase (if enabled) for all modules in parallel
 
 #### Liquibase changelog files
 - Liquibase changelog files are stored in separate sub-folder under `resources/*/db` for each "module" 
@@ -49,7 +49,7 @@ Brief description on how this Spring Boot application is configured.
 ### Test Liquibase migration
 - to test the Liquibase migration, change the data source url in `application.properties` to a persistent file (e.g. from `jdbc:h2:mem:vehicle` to `jdbc:h2:file:./spring-boot-h2-vehicle-db`)
 - create new changelog files
-- test it with Liquibase turn on/off for the whole application or individual module
+- test them with Liquibase turned on/off for the whole application or individual module
 
 ### References
 
